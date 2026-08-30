@@ -1,0 +1,93 @@
+.now-playing {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px 10px 10px;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(246, 241, 231, 0.25);
+  border-radius: 100px;
+  color: #f6f1e7;
+  max-width: min(360px, calc(100vw - 44px));
+}
+
+.now-playing-art {
+  position: relative;
+  flex: none;
+  width: 66px;
+  height: 44px;
+}
+
+.now-playing-cover {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  z-index: 2;
+}
+
+.now-playing-record {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  transform: translateX(22px);
+  background: radial-gradient(
+    circle at center,
+    #1a1a1a 0 8%,
+    #3a3a3a 9% 11%,
+    #1a1a1a 12% 60%,
+    #2c2c2c 61% 100%
+  );
+  z-index: 1;
+}
+
+.now-playing-info {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.now-playing-title {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.now-playing-artist {
+  font-size: 12px;
+  color: #d8cfbf;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.now-playing-stop {
+  flex: none;
+  border: 1px solid rgba(246, 241, 231, 0.4);
+  background: rgba(246, 241, 231, 0.12);
+  color: #f6f1e7;
+  font: inherit;
+  font-size: 12px;
+  padding: 6px 14px;
+  border-radius: 100px;
+  cursor: pointer;
+}
+
+.now-playing-stop:hover {
+  border-color: #e2954c;
+  background: rgba(246, 241, 231, 0.2);
+}

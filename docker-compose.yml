@@ -1,0 +1,61 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: music_room
+      POSTGRES_PASSWORD: music_room
+      POSTGRES_DB: music_room
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U music_room']
+      interval: 2s
+      timeout: 5s
+      retries: 20
+
+  server:
+    build:
+      context: ./server
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://music_room:music_room@postgres:5432/music_room
+      PORT: 8888
+      ADMIN_EMAIL: admin@music-room.local
+      ADMIN_PASSWORD: change-me
+      APP_BASE_URL: http://localhost:8888
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+      EMAIL_FROM: ${EMAIL_FROM:-onboarding@resend.dev}
+    ports:
+      - '8888:8888'
+    volumes:
+      - ./server/src:/app/src
+      - ./server/prisma:/app/prisma
+    depends_on:
+      postgres:
+        condition: service_healthy
+    # Regenerates the client against whatever schema is currently mounted,
+    # applies any pending migrations, and makes sure the admin user exists
+    # (seed.js is a no-op if it's already there) before starting the app.
+    command: sh -c "npx prisma generate && npx prisma migrate deploy && node prisma/seed.js && node src/index.js"
+
+  client:
+    build:
+      context: .
+    restart: unless-stopped
+    environment:
+      VITE_API_PROXY_TARGET: http://server:8888
+      VITE_USE_POLLING: 'true'
+    ports:
+      - '5173:5173'
+    volumes:
+      - ./src:/app/src
+      - ./index.html:/app/index.html
+      - ./vite.config.js:/app/vite.config.js
+    depends_on:
+      - server
+
+volumes:
+  postgres-data:

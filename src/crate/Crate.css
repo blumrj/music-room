@@ -1,0 +1,240 @@
+.crate-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.crate-panel {
+  background: transparent;
+  color: #f6f1e7;
+  padding: 20px 24px;
+  width: 520px;
+  max-width: calc(100vw - 40px);
+  max-height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.crate-title {
+  margin: 0 0 12px;
+  font-size: 1.2rem;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+}
+
+/* --- browser: arrows + stack --- */
+
+.browser {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 12px 0 24px;
+}
+
+.nav-arrow {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(246, 241, 231, 0.4);
+  background: rgba(246, 241, 231, 0.12);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  color: #f6f1e7;
+}
+
+.nav-arrow:hover:not(:disabled) {
+  border-color: #e2954c;
+  color: #e2954c;
+  background: rgba(246, 241, 231, 0.2);
+}
+
+.nav-arrow:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.stack {
+  position: relative;
+  width: 430px;
+  height: 240px;
+}
+
+/* Fixed-width anchor, centered in .stack, that the sleeve/peeks/record
+   are positioned against — .stack itself is wider than the sleeve to
+   leave room for the record to slide out, so centering has to happen
+   on this inner box, not on .stack directly. */
+.sleeve-anchor {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 220px;
+  height: 240px;
+  transform: translateX(-50%);
+}
+
+.peek {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  width: 220px;
+  height: 220px;
+  border-radius: 6px;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.65);
+}
+
+.peek-1 {
+  transform: translate(14px, -11px);
+  z-index: 1;
+}
+
+.peek-2 {
+  transform: translate(26px, -22px);
+  z-index: 0;
+  filter: brightness(0.5);
+}
+
+.current-sleeve {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+.sleeve-cover {
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 220px;
+  height: 220px;
+  border-radius: 6px;
+  z-index: 2;
+  background-color: #3a332b;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.5);
+}
+
+.record-disc {
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  z-index: 1;
+  background: radial-gradient(
+    circle at center,
+    #1a1a1a 0 8%,
+    #3a3a3a 9% 11%,
+    #1a1a1a 12% 60%,
+    #2c2c2c 61% 100%
+  );
+  transform: translateX(0);
+  transition: transform 0.5s ease;
+}
+
+.record-disc.pulled {
+  transform: translateX(100px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .record-disc {
+    transition: none;
+  }
+}
+
+/* sleeve entering from a browse step */
+
+@keyframes slide-in-next {
+  from {
+    transform: translateX(40px);
+    opacity: 0.3;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-prev {
+  from {
+    transform: translateX(-40px);
+    opacity: 0.3;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.current-sleeve.slide-next {
+  animation: slide-in-next 0.3s ease-out;
+}
+
+.current-sleeve.slide-prev {
+  animation: slide-in-prev 0.3s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .current-sleeve.slide-next,
+  .current-sleeve.slide-prev {
+    animation: none;
+  }
+}
+
+/* --- meta + preview button --- */
+
+.sleeve-meta {
+  text-align: center;
+}
+
+.sleeve-meta h3 {
+  margin: 0 0 4px;
+  font-size: 1.3rem;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+}
+
+.selected-artist {
+  margin: 0 0 10px;
+  font-size: 14px;
+  color: #d8cfbf;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+}
+
+.selected-note {
+  margin: 0 0 18px;
+  font-size: 14px;
+  font-style: italic;
+  color: #d8cfbf;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+}
+
+.preview-button {
+  border: 1px solid #e2954c;
+  background: #b5651d;
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 9px 20px;
+  border-radius: 100px;
+  cursor: pointer;
+}
+
+.preview-button:hover:not(:disabled) {
+  background: #c1731f;
+}
+
+.preview-button:disabled {
+  opacity: 0.7;
+  cursor: default;
+}

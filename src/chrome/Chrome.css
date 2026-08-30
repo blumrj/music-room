@@ -1,0 +1,123 @@
+.app-title {
+  position: fixed;
+  top: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: 'Bungee', system-ui, sans-serif;
+  font-size: clamp(1.5rem, 4vw, 2.4rem);
+  color: #f6f1e7;
+  text-shadow:
+    0 3px 0 #b5651d,
+    0 8px 16px rgba(0, 0, 0, 0.5);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.corner-stack {
+  position: fixed;
+  bottom: 22px;
+  left: 22px;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.corner-button {
+  border: 1px solid rgba(246, 241, 231, 0.4);
+  background: rgba(0, 0, 0, 0.4);
+  color: #f6f1e7;
+  font: inherit;
+  font-size: 13px;
+  padding: 9px 18px;
+  border-radius: 100px;
+  cursor: pointer;
+}
+
+.corner-button:hover {
+  background: rgba(0, 0, 0, 0.55);
+  border-color: #e2954c;
+}
+
+.chrome-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 30;
+}
+
+.chrome-panel {
+  background: #f6f1e7;
+  color: #2a2420;
+  border-radius: 8px;
+  padding: 24px 28px;
+  width: 360px;
+  max-width: calc(100vw - 40px);
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.chrome-panel h2 {
+  margin: 0 0 12px;
+  font-size: 1.2rem;
+}
+
+.chrome-panel p {
+  margin: 0 0 12px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.chrome-panel form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.chrome-panel input {
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+  font-size: 14px;
+  padding: 8px 10px;
+  border: 1px solid #d8cfbf;
+  border-radius: 4px;
+}
+
+.chrome-panel form button[type='submit'] {
+  border: 1px solid #b5651d;
+  background: #b5651d;
+  color: #fff;
+  font: inherit;
+  font-size: 13px;
+  padding: 8px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.chrome-panel form button[type='submit']:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.chrome-error {
+  color: #9a3324;
+  font-size: 13px;
+}
+
+.chrome-close {
+  border: 1px solid #d8cfbf;
+  background: #fff;
+  color: #2a2420;
+  font: inherit;
+  font-size: 12.5px;
+  padding: 6px 16px;
+  border-radius: 100px;
+  cursor: pointer;
+}

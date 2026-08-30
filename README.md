@@ -1,3 +1,7 @@
+# Music Room
+
+Planning & reference doc: [Sleeve Notes](https://claude.ai/code/artifact/48635945-22bf-439b-9429-cde6bb19ff0f)
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
