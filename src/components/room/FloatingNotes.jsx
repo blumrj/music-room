@@ -1,6 +1,6 @@
-import { useCrate } from '../crate/CrateContext'
-import noteSingle from '../assets/sprites/note-single.svg'
-import notePair from '../assets/sprites/note-pair.svg'
+import { useCrate } from '../../context/CrateContext'
+import noteSingle from '../../assets/sprites/note-single.svg'
+import notePair from '../../assets/sprites/note-pair.svg'
 import './FloatingNotes.css'
 
 // Offsets are relative to the anchor (the turntable's top-center).

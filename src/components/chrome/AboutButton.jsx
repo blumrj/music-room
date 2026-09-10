@@ -1,10 +1,8 @@
 import { useState } from 'react'
 
-// Placeholder copy for now — swap for the real "what is this" text
-// whenever it's written.
-const LOREM = [
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-  'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.',
+const ABOUT_TEXT = [
+  "Welcome to the Music Room! You can visit this page whenever you need a bit of music inspiration. I'm curating a running list of my favorite songs and sharing them here. Click the turntable to browse what I've currently picked out, and play 30 second previews to find something new.",
+  "I made this as a fun way to explore music and share what I'm currently into. Subscribe and you'll get notified whenever a new song is added. Right now, only I can update the crate, but I'm working on letting everyone create their own profile, pick their own music, and share it with others too. Enjoy!",
 ]
 
 export default function AboutButton() {
@@ -24,7 +22,7 @@ export default function AboutButton() {
         <div className="chrome-backdrop" onClick={() => setOpen(false)}>
           <div className="chrome-panel" onClick={(e) => e.stopPropagation()}>
             <h2>What is this?</h2>
-            {LOREM.map((p) => (
+            {ABOUT_TEXT.map((p) => (
               <p key={p.slice(0, 12)}>{p}</p>
             ))}
             <button type="button" className="chrome-close" onClick={() => setOpen(false)}>

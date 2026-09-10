@@ -17,6 +17,7 @@ export default function Sprite({
   placeholderColor,
   label,
   onClick,
+  flip,
 }) {
   const style = {
     position: 'absolute',
@@ -24,6 +25,7 @@ export default function Sprite({
     top: gridRow * UNIT,
     width,
     height,
+    ...(flip ? { transform: 'scaleX(-1)' } : {}),
     ...(sheet
       ? {
           backgroundImage: `url(${sheet})`,

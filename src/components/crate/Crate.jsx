@@ -1,4 +1,4 @@
-import { useCrate } from './CrateContext'
+import { useCrate } from '../../context/CrateContext'
 import './Crate.css'
 
 export default function Crate() {

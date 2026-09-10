@@ -1,31 +1,27 @@
-import { useState } from 'react'
+import { useState } from "react";
+import apiClient from "../../api/ApiClient";
 
 export default function NewsletterButton() {
-  const [open, setOpen] = useState(false)
-  const [email, setEmail] = useState('')
-  const [status, setStatus] = useState('idle') // idle | submitting | done | error
+  const [open, setOpen] = useState(false);
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState("idle"); // idle | submitting | done | error
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setStatus('submitting')
+    e.preventDefault();
+    setStatus("submitting");
     try {
-      const res = await fetch('/api/newsletter/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      })
-      if (!res.ok) throw new Error('subscribe failed')
-      setStatus('done')
+      await apiClient.subscribe(email);
+      setStatus("done");
     } catch {
-      setStatus('error')
+      setStatus("error");
     }
-  }
+  };
 
   const close = () => {
-    setOpen(false)
-    setStatus('idle')
-    setEmail('')
-  }
+    setOpen(false);
+    setStatus("idle");
+    setEmail("");
+  };
 
   return (
     <>
@@ -41,7 +37,7 @@ export default function NewsletterButton() {
         <div className="chrome-backdrop" onClick={close}>
           <div className="chrome-panel" onClick={(e) => e.stopPropagation()}>
             <h2>Get notified</h2>
-            {status === 'done' ? (
+            {status === "done" ? (
               <p>Check your inbox to confirm — almost there.</p>
             ) : (
               <>
@@ -57,12 +53,14 @@ export default function NewsletterButton() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
-                  <button type="submit" disabled={status === 'submitting'}>
-                    {status === 'submitting' ? 'Submitting…' : 'Subscribe'}
+                  <button type="submit" disabled={status === "submitting"}>
+                    {status === "submitting" ? "Submitting…" : "Subscribe"}
                   </button>
                 </form>
-                {status === 'error' && (
-                  <p className="chrome-error">Something went wrong — try again.</p>
+                {status === "error" && (
+                  <p className="chrome-error">
+                    Something went wrong — try again.
+                  </p>
                 )}
               </>
             )}
@@ -73,5 +71,5 @@ export default function NewsletterButton() {
         </div>
       )}
     </>
-  )
+  );
 }

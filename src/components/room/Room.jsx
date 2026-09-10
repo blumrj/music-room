@@ -3,9 +3,9 @@ import FloatingNotes from './FloatingNotes'
 import Cat from './Cat'
 import { ITEMS } from './items'
 import { ROWS, FLOOR_ROW, NATIVE_WIDTH, NATIVE_HEIGHT, SCALE, UNIT } from './constants'
-import floorTile from '../assets/sprites/floor-tile-wood.png'
-import wallpaperTile from '../assets/sprites/wallpaper-tile.png'
-import { useCrate } from '../crate/CrateContext'
+import floorTile from '../../assets/sprites/floor-tile-wood.png'
+import wallpaperTile from '../../assets/sprites/wallpaper-tile.png'
+import { useCrate } from '../../context/CrateContext'
 import './Room.css'
 
 const turntable = ITEMS.find((item) => item.isTurntable)
@@ -61,7 +61,7 @@ export default function Room() {
           ))}
 
           <FloatingNotes anchorX={turntableAnchor.x} anchorY={turntableAnchor.y} />
-          <Cat />
+          <Cat gridCol={7.5} gridRow={5} />
         </div>
       </div>
     </div>

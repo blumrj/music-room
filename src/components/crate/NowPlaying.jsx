@@ -1,4 +1,4 @@
-import { useCrate } from './CrateContext'
+import { useCrate } from '../../context/CrateContext'
 import './NowPlaying.css'
 
 export default function NowPlaying() {

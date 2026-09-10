@@ -1,72 +1,66 @@
-import { useState } from 'react'
-import { useCrate } from '../crate/CrateContext'
-import { useAuth } from '../auth/AuthContext'
+import { useState } from "react";
+import { useCrate } from "../../context/CrateContext";
+import { useAuth } from "../../context/AuthContext";
+import apiclient from "../../api/ApiClient";
 
 export default function EditTracks() {
-  const { sleeves, refetchSleeves } = useCrate()
-  const { logout } = useAuth()
-  const [query, setQuery] = useState('')
-  const [results, setResults] = useState([])
-  const [note, setNote] = useState('')
-  const [searching, setSearching] = useState(false)
-  const [busy, setBusy] = useState(false)
+  const { sleeves, refetchSleeves } = useCrate();
+  const { logout } = useAuth();
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState([]);
+  const [note, setNote] = useState("");
+  const [searching, setSearching] = useState(false);
+  const [busy, setBusy] = useState(false);
 
   const handleSearch = async (e) => {
-    e.preventDefault()
-    if (!query.trim()) return
-    setSearching(true)
+    e.preventDefault();
+    if (!query.trim()) return;
+    setSearching(true);
     try {
-      const res = await fetch(`/api/deezer/search?q=${encodeURIComponent(query)}`)
-      setResults(await res.json())
+      const result = await apiclient.searchDeezer(query);
+      setResults(result);
     } finally {
-      setSearching(false)
+      setSearching(false);
     }
-  }
+  };
 
   const handleAdd = async (deezerId) => {
-    setBusy(true)
+    setBusy(true);
     try {
-      await fetch('/api/tracks', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ deezerId, note }),
-      })
-      setNote('')
-      setResults([])
-      setQuery('')
-      await refetchSleeves()
+      await apiclient.addTrack(deezerId, note);
+      setNote("");
+      setResults([]);
+      setQuery("");
+      await refetchSleeves();
     } finally {
-      setBusy(false)
+      setBusy(false);
     }
-  }
+  };
 
   const handleRemove = async (id) => {
-    setBusy(true)
+    setBusy(true);
     try {
-      await fetch(`/api/tracks/${id}`, { method: 'DELETE' })
-      await refetchSleeves()
+      await apiclient.deleteTrack(id)
+      await refetchSleeves();
     } finally {
-      setBusy(false)
+      setBusy(false);
     }
-  }
+  };
 
   const handleMove = async (i, delta) => {
-    const swapWith = i + delta
-    if (swapWith < 0 || swapWith >= sleeves.length) return
-    const reordered = [...sleeves]
-    ;[reordered[i], reordered[swapWith]] = [reordered[swapWith], reordered[i]]
-    setBusy(true)
+    const swapWith = i + delta;
+    if (swapWith < 0 || swapWith >= sleeves.length) return;
+    const reordered = [...sleeves];
+    [reordered[i], reordered[swapWith]] = [reordered[swapWith], reordered[i]];
+    setBusy(true);
     try {
-      await fetch('/api/tracks/order', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ orderedIds: reordered.map((t) => t.id) }),
-      })
-      await refetchSleeves()
+      const orderedIds = reordered.map((t) => t.id)
+      await apiclient.reorderTracks(orderedIds)
+      await refetchSleeves();
     } finally {
-      setBusy(false)
+      setBusy(false);
     }
-  }
+  };
 
   return (
     <div className="edit-tracks">
@@ -85,7 +79,7 @@ export default function EditTracks() {
           onChange={(e) => setQuery(e.target.value)}
         />
         <button type="submit" disabled={searching}>
-          {searching ? 'Searching…' : 'Search'}
+          {searching ? "Searching…" : "Search"}
         </button>
       </form>
 
@@ -103,7 +97,11 @@ export default function EditTracks() {
                 <span>
                   {r.title} — {r.artist}
                 </span>
-                <button type="button" disabled={busy} onClick={() => handleAdd(r.externalId)}>
+                <button
+                  type="button"
+                  disabled={busy}
+                  onClick={() => handleAdd(r.externalId)}
+                >
                   Add
                 </button>
               </li>
@@ -148,5 +146,5 @@ export default function EditTracks() {
         ))}
       </ul>
     </div>
-  )
+  );
 }
