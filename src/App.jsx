@@ -8,9 +8,17 @@ import EditPanel from './components/edit/EditPanel'
 import Title from './components/chrome/Title'
 import AboutButton from './components/chrome/AboutButton'
 import NewsletterButton from './components/newsletter/NewsletterButton'
+import DesktopOnlyNotice from './components/chrome/DesktopOnlyNotice'
+import { useIsDesktop } from './hooks/useIsDesktop'
 import './components/chrome/Chrome.css'
 
 function App() {
+  const isDesktop = useIsDesktop()
+
+  if (!isDesktop) {
+    return <DesktopOnlyNotice />
+  }
+
   return (
     <AuthProvider>
       <CrateProvider>

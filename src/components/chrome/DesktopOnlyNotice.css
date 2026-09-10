@@ -1,0 +1,29 @@
+.desktop-notice {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 32px;
+  text-align: center;
+  background: #14100e;
+  color: #f6f1e7;
+}
+
+.desktop-notice-title {
+  margin: 0;
+  font-family: 'Bungee', system-ui, sans-serif;
+  font-size: clamp(1.5rem, 8vw, 2.4rem);
+  text-shadow:
+    0 3px 0 #b5651d,
+    0 8px 16px rgba(0, 0, 0, 0.5);
+}
+
+.desktop-notice p {
+  margin: 0;
+  max-width: 40ch;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #cfc6b8;
+}
