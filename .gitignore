@@ -30,3 +30,4 @@ server/node_modules
 *.sln
 *.sw?
 .scratch/
+.neon
