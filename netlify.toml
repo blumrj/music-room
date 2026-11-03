@@ -1,7 +1,11 @@
 [build]
   command = "npm install --include=dev && npm --prefix server install --include=dev && (cd server && npx prisma generate) && npm run build"
   publish = "dist"
-  functions = "netlify/functions"
+  functions = "server/functions"
+
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["@prisma/client"]
 
 [[redirects]]
   from = "/api/*"
