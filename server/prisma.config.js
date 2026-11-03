@@ -1,7 +1,7 @@
-require('dotenv').config()
-const { defineConfig } = require('prisma/config')
+import 'dotenv/config'
+import { defineConfig } from 'prisma/config'
 
-module.exports = defineConfig({
+export default defineConfig({
   schema: 'prisma/schema.prisma',
   migrations: {
     path: 'prisma/migrations',

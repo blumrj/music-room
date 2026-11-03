@@ -104,19 +104,6 @@ class ApiClient {
       throw new Error(err.response?.data?.error || "Unable to search Deezer");
     }
   }
-
-  /*SUBSCRIBE */
-
-  async subscribe(email) {
-    try {
-      const { data } = await this.client.post("/newsletter/subscribe", {
-        email,
-      });
-      return data;
-    } catch (err) {
-      throw new Error(err.response?.data?.error || "Subscription Failed");
-    }
-  }
 }
 
 export default new ApiClient();

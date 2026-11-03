@@ -1,5 +1,5 @@
-const { PrismaClient } = require('@prisma/client')
-const { PrismaPg } = require('@prisma/adapter-pg')
+import { PrismaClient } from '@prisma/client'
+import { PrismaPg } from '@prisma/adapter-pg'
 
 // Reused across requests (and across Lambda/Function invocations that
 // reuse the same warm container) rather than opening a new client per
@@ -14,4 +14,4 @@ if (process.env.NODE_ENV !== 'production') {
   global.__prisma = prisma
 }
 
-module.exports = prisma
+export default prisma

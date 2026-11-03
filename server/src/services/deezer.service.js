@@ -1,4 +1,4 @@
-const axios = require('axios')
+import axios from 'axios'
 
 const client = axios.create({ baseURL: 'https://api.deezer.com', timeout: 8000 })
 
@@ -23,4 +23,4 @@ async function getTrack(deezerId) {
   return mapTrack(data)
 }
 
-module.exports = { searchTracks, getTrack }
+export default{ searchTracks, getTrack }

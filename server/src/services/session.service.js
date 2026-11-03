@@ -1,4 +1,5 @@
-const prisma = require('./db')
+import prisma from '../db.js'
+import bcrypt from 'bcryptjs'
 
 const SESSION_COOKIE = 'session_id'
 const SESSION_TTL_MS = 7 * 24 * 60 * 60 * 1000 // 7 days
@@ -37,18 +38,28 @@ function clearSessionCookie(res) {
   res.clearCookie(SESSION_COOKIE)
 }
 
-async function requireAuth(req, res, next) {
-  const user = await getSessionUser(req.cookies?.[SESSION_COOKIE])
-  if (!user) return res.status(401).json({ error: 'Not authenticated' })
-  req.user = user
-  next()
+async function login(email, password) {
+  const user = email && (await prisma.user.findUnique({ where: { email } }))
+  const valid = user && (await bcrypt.compare(password ?? '', user.passwordHash))
+  if (!valid) {
+    const err = new Error('Invalid email or password')
+    err.status = 401
+    throw err
+  }
+  const sessionId = await createSession(user.id)
+  return { sessionId, email: user.email }
 }
 
-module.exports = {
+async function logout(sessionId) {
+  await prisma.session.delete({ where: { id: sessionId } }).catch(() => {})
+}
+
+export default{
   SESSION_COOKIE,
   createSession,
   getSessionUser,
   setSessionCookie,
   clearSessionCookie,
-  requireAuth,
+  login,
+  logout,
 }

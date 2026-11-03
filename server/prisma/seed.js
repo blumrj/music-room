@@ -1,6 +1,6 @@
-require('dotenv').config()
-const bcrypt = require('bcryptjs')
-const prisma = require('../src/db')
+import 'dotenv/config'
+import bcrypt from 'bcryptjs'
+import prisma from '../src/db.js'
 
 async function main() {
   const email = process.env.ADMIN_EMAIL || 'admin@music-room.local'

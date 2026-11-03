@@ -2,7 +2,7 @@
   "name": "music-room-server",
   "version": "0.0.0",
   "private": true,
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "dev": "node src/index.js",
     "seed": "node prisma/seed.js"

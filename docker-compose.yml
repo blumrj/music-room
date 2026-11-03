@@ -25,9 +25,6 @@ services:
       PORT: 8888
       ADMIN_EMAIL: admin@music-room.local
       ADMIN_PASSWORD: change-me
-      APP_BASE_URL: http://localhost:8888
-      RESEND_API_KEY: ${RESEND_API_KEY:-}
-      EMAIL_FROM: ${EMAIL_FROM:-onboarding@resend.dev}
     ports:
       - '8888:8888'
     volumes:

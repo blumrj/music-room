@@ -1,4 +1,4 @@
-const serverless = require('serverless-http')
-const app = require('../../server/src/app')
+import serverless from 'serverless-http'
+import app from '../../server/src/app.js'
 
-exports.handler = serverless(app)
+export const handler = serverless(app)

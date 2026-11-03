@@ -1,6 +1,5 @@
-const prisma = require('./db')
-const deezer = require('./deezer')
-const { notifyTrackAdded } = require('./newsletter')
+import prisma from '../db.js'
+import deezerService from './deezer.service.js'
 
 const SOURCE = 'deezer'
 
@@ -8,8 +7,12 @@ const SOURCE = 'deezer'
 // preview URL actually stays valid in practice.
 const TTL_MS = 24 * 60 * 60 * 1000
 
+async function listTracks() {
+  return prisma.track.findMany({ orderBy: { position: 'asc' } })
+}
+
 async function addTrackFromDeezer({ deezerId, note = '' }) {
-  const info = await deezer.getTrack(deezerId)
+  const info = await deezerService.getTrack(deezerId)
 
   const existing = await prisma.track.findUnique({
     where: { source_externalId: { source: SOURCE, externalId: info.externalId } },
@@ -29,15 +32,11 @@ async function addTrackFromDeezer({ deezerId, note = '' }) {
     data: { source: SOURCE, note, position, lastFetchedAt: new Date(), ...info },
   })
 
-  // Only a genuine new addition notifies subscribers — refreshing an
-  // already-in-the-crate track (the branch above) isn't "new music."
-  notifyTrackAdded(track).catch((err) => console.error('notifyTrackAdded failed', err))
-
   return track
 }
 
 async function refreshTrack(track) {
-  const info = await deezer.getTrack(track.externalId)
+  const info = await deezerService.getTrack(track.externalId)
   return prisma.track.update({
     where: { id: track.id },
     data: { ...info, lastFetchedAt: new Date() },
@@ -70,11 +69,28 @@ async function reorderTracks(orderedIds) {
   )
 }
 
-module.exports = {
+// Deezer preview URLs are short-lived signed links, nowhere near the
+// metadata's own staleness window — always re-fetch from Deezer at the
+// moment it's asked for, rather than serving the daily-refreshed snapshot.
+async function getFreshPreviewUrl(id) {
+  const track = await prisma.track.findUnique({ where: { id } })
+  if (!track) return null
+
+  const fresh = await deezerService.getTrack(track.externalId)
+  await prisma.track.update({
+    where: { id: track.id },
+    data: { previewUrl: fresh.previewUrl, lastFetchedAt: new Date() },
+  })
+  return fresh.previewUrl
+}
+
+export default{
+  listTracks,
   addTrackFromDeezer,
   refreshTrack,
   refreshStaleTracks,
   removeTrack,
   reorderTracks,
+  getFreshPreviewUrl,
   TTL_MS,
 }
