@@ -1,5 +1,5 @@
 [build]
-  command = "npm install && npm --prefix server install && (cd server && npx prisma generate) && npm run build"
+  command = "npm install --include=dev && npm --prefix server install --include=dev && (cd server && npx prisma generate) && npm run build"
   publish = "dist"
   functions = "netlify/functions"
 
